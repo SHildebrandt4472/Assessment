@@ -18,7 +18,7 @@ catagories = [  # word list in catagories
     {"name": "Countries",           "words": ["usa", "canada", "mexico", "brazil"]}
 ]
 
-game_board = []
+
 game_catagories = []
 
 def welcome():
@@ -48,16 +48,26 @@ def generate_new_game():
             game_board.append(grid_cell)
         
     random.shuffle(game_board)  # shuffle game board list
+    return game_board
         
 
         
-    for cell in game_board:
-        print(cell["word"],cell["catagory"]["name"])
+  
+        
+def display_game_board(game_board):
+      
+      cell_number = 1
+      for cell in game_board:
+        print(cell_number, cell["word"])
+        cell_number += 1
+
  
 
 
 
 # Main prog starts here
-# welcome()
-generate_new_game()
+welcome()
+game_board = generate_new_game()
+display_game_board(game_board)
+
     
