@@ -51,9 +51,6 @@ def generate_new_game():
     return game_board
         
 
-        
-  
-        
 def display_game_board(game_board):
       
       cell_number = 1
@@ -61,7 +58,38 @@ def display_game_board(game_board):
         print(cell_number, cell["word"])
         cell_number += 1
 
- 
+def string_to_int(string):
+    try:
+        return int(string)
+    except ValueError:
+        return 0   
+
+def get_player_input(game_board):
+    
+    guess_string = input("Please enter your guess by typing the 4 numbers seperated by commas associated to the words you think are connected (e.g '1,5,8,11') : ")
+    
+    while True:
+        guess = guess_string.split(",")
+        if len(guess) == 4:
+            numeric_guess =[]
+            for string in guess:
+                cell = string_to_int(string)
+                if cell > 0 and cell <= len(game_board) and game_board[cell-1]["done"] == False:
+                    numeric_guess.append(cell)
+                    
+                else:
+                    print(f"{cell} is not a valid word number")
+
+            if len(numeric_guess) == 4:        
+                return numeric_guess        
+                    
+        else:            
+            print("Please ensure to enter 4 numbers seperated by commas respresenting your 4 chosen words")
+
+        print("")
+        guess_string = input("Please try again : ")
+        
+
 
 
 
@@ -69,5 +97,6 @@ def display_game_board(game_board):
 welcome()
 game_board = generate_new_game()
 display_game_board(game_board)
+get_player_input(game_board)
 
     
