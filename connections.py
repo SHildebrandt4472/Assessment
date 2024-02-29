@@ -1,3 +1,6 @@
+import sys
+
+from termcolor import colored, cprint
 
 # Connections python game
 # By Sam Hildebrandt
@@ -9,7 +12,7 @@ import random
 # Constants
 catagories = [  # word list in catagories
     {"name": "Muiscal Instruments", "words": ["guitar", "piano", "violin", "drums"]},
-    {"name": "Fruits",              "words": ["apple", "banana", "orange", "grape"]},
+    {"name": "Fruits",              "words": ["apple", "banana", "pear", "grape"]},
     {"name": "Animals",             "words": ["dog", "cat", "bird", "fish"]},
     {"name": "Colors",              "words": ["red", "blue", "green", "yellow"]},
     {"name": "Shapes",              "words": ["circle", "square", "triangle", "rectangle"]},
@@ -73,12 +76,14 @@ def get_player_input(game_board):
         if len(guess) == 4:
             numeric_guess =[]
             for string in guess:
-                cell = string_to_int(string)
-                if cell > 0 and cell <= len(game_board) and game_board[cell-1]["done"] == False:
+                string = string.strip()
+                cell = string_to_int(string) - 1
+                if cell >= 0 and cell < len(game_board) and game_board[cell]["done"] == False:
                     numeric_guess.append(cell)
                     
                 else:
-                    print(f"{cell} is not a valid word number")
+                    print(f"'{string}' is not a valid word number")
+                    print("Please ensure to enter 4 numbers seperated by commas respresenting your 4 chosen words")
 
             if len(numeric_guess) == 4:        
                 return numeric_guess        
@@ -88,7 +93,29 @@ def get_player_input(game_board):
 
         print("")
         guess_string = input("Please try again : ")
+
+def is_guess_close(game_board,guess):
+    guess_1_count = 0
+    guess_2_count = 0
+    for cell in guess:  
+        if game_board[cell]["catagory"] == game_board[guess[0]]["catagory"]:  # count how many guesses match the first guess 
+            guess_1_count += 1
+        if game_board[cell]["catagory"] == game_board[guess[1]]["catagory"]:  # count how many guesses match the second guess 
+            guess_2_count += 1
         
+    if guess_1_count == 3 or guess_2_count == 3:
+        return True  # At least three are from the same catagory
+    else:
+        return False
+    
+
+def is_guess_correct(game_board, guess):
+    # check if the words are from the same catagory
+    catagory = game_board[guess[0]]["catagory"]
+    for cell in guess:
+        if game_board[cell]["catagory"] != catagory:
+            return False
+    return True
 
 
 
@@ -97,6 +124,13 @@ def get_player_input(game_board):
 welcome()
 game_board = generate_new_game()
 display_game_board(game_board)
-get_player_input(game_board)
+guess = get_player_input(game_board)
+correct = is_guess_correct(game_board, guess)
+if correct == True:
+    print("You Win!")
+elif is_guess_close(game_board, guess):
+    print("You are one off...")
+else:
+    print("You lose!, your bad!") 
 
     
