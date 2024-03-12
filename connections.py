@@ -66,6 +66,12 @@ def string_to_int(string):
         return int(string)
     except ValueError:
         return 0   
+    
+def centered_text(word,width):
+    spaces = (width-len(word)) // 2
+    text = " "*spaces + word
+    text += " " * (width - len(text))
+    return text
 
 def get_player_input(game_board):
     
@@ -118,10 +124,11 @@ def is_guess_correct(game_board, guess):
     return True
 
 
-
-
 # Main prog starts here
 welcome()
+
+print(centered_text("word", 20))
+
 game_board = generate_new_game()
 display_game_board(game_board)
 guess = get_player_input(game_board)
