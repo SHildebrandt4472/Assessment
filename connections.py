@@ -47,19 +47,49 @@ def generate_new_game():
         for word in catagory["words"]:  # adds words to game board list with catagory guessed state
             grid_cell = {"catagory": catagory,
                          "word"    : word, 
-                         "done": False}
+                         "done"    : False}
             game_board.append(grid_cell)
         
     random.shuffle(game_board)  # shuffle game board list
     return game_board
         
 
+def print_line(col_width):  # print row seperator line 
+    for col in range(4):
+        print("+"+"-"*col_width,end="")
+    print("+")
+
+def print_spacer(col_width,first_cell=0):  #print spacer between row, line and word
+    
+    for col in range(4):
+        if first_cell > 0:  # if cell number is passed, print cell number in the col
+            cell_number = first_cell + col
+            spaces = col_width - 2
+            if cell_number > 9:  # if number has 2 digit 
+                spaces -= 1
+            
+            print(f"| {cell_number}" + " "*spaces, end="")  # print the col including cell number
+        
+        else:
+            print("|" + " "*col_width, end="")
+
+    print("|")
+
 def display_game_board(game_board):
       
-      cell_number = 1
-      for cell in game_board:
-        print(cell_number, cell["word"])
-        cell_number += 1
+    cell = 0
+    col_width = 18
+    for row in range(4):   # create the row
+        print_line(col_width)   
+        print_spacer(col_width,cell+1)
+        for col in range(4):  # create individual col
+            word = game_board[cell]["word"]
+            print("|"+centered_text(word,col_width),end="")  # print without creating new line
+            cell += 1
+        print("|")
+        print_spacer(col_width)
+    print_line(col_width)
+    print()
 
 def string_to_int(string):
     try:
@@ -126,8 +156,6 @@ def is_guess_correct(game_board, guess):
 
 # Main prog starts here
 welcome()
-
-print(centered_text("word", 20))
 
 game_board = generate_new_game()
 display_game_board(game_board)
