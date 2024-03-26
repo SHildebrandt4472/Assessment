@@ -59,7 +59,7 @@ def print_line(col_width):  # print row seperator line
         print("+"+"-"*col_width,end="")
     print("+")
 
-def print_spacer(col_width,first_cell=0):  #print spacer between row, line and word
+def print_spacer(col_width,first_cell=0,game_board=None):  #print spacer between row, line and word
     
     for col in range(4):
         if first_cell > 0:  # if cell number is passed, print cell number in the col
@@ -68,7 +68,10 @@ def print_spacer(col_width,first_cell=0):  #print spacer between row, line and w
             if cell_number > 9:  # if number has 2 digit 
                 spaces -= 1
             
-            print(f"| {cell_number}" + " "*spaces, end="")  # print the col including cell number
+            if game_board[cell_number-1]["done"] == True:
+                print("|" + " "*col_width, end="")
+            else:
+                print(f"| {cell_number}" + " "*spaces, end="")  # print the col including cell number
         
         else:
             print("|" + " "*col_width, end="")
@@ -81,7 +84,7 @@ def display_game_board(game_board):
     col_width = 18
     for row in range(4):   # create the row
         print_line(col_width)   
-        print_spacer(col_width,cell+1)
+        print_spacer(col_width,cell+1,game_board)
         for col in range(4):  # create individual col
             word = game_board[cell]["word"]
             print("|"+centered_text(word,col_width),end="")  # print without creating new line
@@ -109,12 +112,12 @@ def get_player_input(game_board):
     
     while True:
         guess = guess_string.split(",")
-        if len(guess) == 4:
+        if len(guess) == 4:  # if guess correct length, 4 inputs
             numeric_guess =[]
             for string in guess:
                 string = string.strip()
                 cell = string_to_int(string) - 1
-                if cell >= 0 and cell < len(game_board) and game_board[cell]["done"] == False:
+                if cell >= 0 and cell < len(game_board) and game_board[cell]["done"] == False: #  Validate guess
                     numeric_guess.append(cell)
                     
                 else:
@@ -150,22 +153,32 @@ def is_guess_correct(game_board, guess):
     catagory = game_board[guess[0]]["catagory"]
     for cell in guess:
         if game_board[cell]["catagory"] != catagory:
-            return False
-    return True
+            return None # words are not from the same catagory
+    return catagory
+
+
+def update_board(game_board, catagory):
+    for cell in game_board:
+        if cell["catagory"] == catagory:
+            cell["done"] = True
 
 
 # Main prog starts here
 welcome()
 
 game_board = generate_new_game()
-display_game_board(game_board)
-guess = get_player_input(game_board)
-correct = is_guess_correct(game_board, guess)
-if correct == True:
-    print("You Win!")
-elif is_guess_close(game_board, guess):
-    print("You are one off...")
-else:
-    print("You lose!, your bad!") 
+
+
+while True:
+    display_game_board(game_board)
+    guess = get_player_input(game_board)
+    correct_catagory = is_guess_correct(game_board, guess)
+    if correct_catagory != None:
+        update_board(game_board, correct_catagory)
+        print("You Win!")
+    elif is_guess_close(game_board, guess):
+        print("You are one off...")
+    else:
+        print("You lose!, your bad!") 
 
     
