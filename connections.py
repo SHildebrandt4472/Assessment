@@ -157,10 +157,25 @@ def is_guess_correct(game_board, guess):
     return catagory
 
 
+def swap_cells(game_board,a,b):
+    temp = game_board[a]
+    game_board[a] = game_board[b]
+    game_board[b] = temp
+
 def update_board(game_board, catagory):
     for cell in game_board:
         if cell["catagory"] == catagory:
             cell["done"] = True
+
+    for first_not_found in range(0,len(game_board)):
+        if game_board[first_not_found]["done"] == False:   # Found the first word that not found
+            for last_cell_found in range(len(game_board)-1,0,-1):
+                if game_board[last_cell_found]["done"] == True:
+                    if last_cell_found < first_not_found:
+                        return
+                    swap_cells(game_board,first_not_found,last_cell_found)
+                    break
+
 
 
 # Main prog starts here
