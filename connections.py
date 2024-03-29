@@ -4,7 +4,20 @@ from termcolor import colored, cprint
 
 # Connections python game
 # By Sam Hildebrandt
-# Version 0.0.1
+# Version 0.0.2   # First playable version
+
+# Things to add
+        # Display guesses
+        # Display correct catagories
+        # Add colours
+        # add fancy graphics welcome screen
+        # Change cell numbers to start at one
+        # Split "please enter guess.." onto 2 lines
+        # Add more categories (maybe move to separate)
+
+# Things to fix
+        # Not a valid number printouts
+
 
 #Packages
 import random
@@ -31,7 +44,7 @@ def welcome():
 def generate_new_game():
     
     if len(catagories) < 4:
-        print("Thank you, you have played all our catagories that we offer currently, stay turned for more catagories in the future!")  # move to play again function ---->
+        print("Thank you, you have played all the catagories that we currently have to offer.\nStay turned for more catagories in the future!")  # move to play again function ---->
         exit()
 
     random.shuffle(catagories)
@@ -178,22 +191,42 @@ def update_board(game_board, catagory):
 
 
 
-# Main prog starts here
-welcome()
-
-game_board = generate_new_game()
-
-
-while True:
-    display_game_board(game_board)
-    guess = get_player_input(game_board)
-    correct_catagory = is_guess_correct(game_board, guess)
-    if correct_catagory != None:
-        update_board(game_board, correct_catagory)
-        print("You Win!")
-    elif is_guess_close(game_board, guess):
-        print("You are one off...")
-    else:
-        print("You lose!, your bad!") 
-
+def play_game(game_board):
+    lives = 4
+    correct_guesses = 0
     
+    while lives > 0:
+        display_game_board(game_board)
+        guess = get_player_input(game_board)
+        correct_catagory = is_guess_correct(game_board, guess)
+
+        if correct_catagory != None: # guess is correct
+            update_board(game_board, correct_catagory)
+            print("\nCorrect guess!\n")
+            correct_guesses += 1
+            if correct_guesses > 3:
+                print("Congratulations, you have won!!")
+                return
+            
+        elif is_guess_close(game_board, guess):
+            print("\nOne away, you got three out of the 4 words correct\n")
+            lives -= 1
+
+        else:
+            print("\nSorry, Incorrect guess\n")
+            lives -= 1
+    
+    print("Oh no, looks like you've run out of guesses, GAME OVER")
+
+
+# Main prog starts here
+print()
+welcome()
+print()
+while True:
+    game_board = generate_new_game()
+    play_game(game_board)
+    play_again = input("Would you like to play again?? Y/N: ")
+    if play_again.upper() != "Y":
+        print("Thanks for playing")
+        exit()
