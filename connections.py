@@ -15,7 +15,6 @@ from termcolor import colored, cprint
         # Add a phew print out if 1 guess remaining
 
 # Things to fix
-        # Guessing same word twice
 
 
 #Packages
@@ -124,6 +123,13 @@ def centered_text(word,width):
     text += " " * (width - len(text))
     return text
 
+def guess_is_unique(guess):
+    unique_guesses = set(guess)
+    if len(unique_guesses) < len(guess):
+        return False
+    else:
+        return True
+
 def get_player_input(game_board,previous_guesses):
     
     guess_string = input("\nPlease enter your guess by typing the 4 numbers seperated by commas associated to the words you think are connected (e.g '1,5,8,11') : ")
@@ -137,17 +143,18 @@ def get_player_input(game_board,previous_guesses):
                 cell = string_to_int(string) - 1
                 if cell >= 0 and cell < len(game_board) and game_board[cell]["done"] == False: #  Validate guess
                     numeric_guess.append(cell)
-                    
                 else:
                     print(f"\n'{string}' is not a valid word number")
-                    
-
-            if len(numeric_guess) == 4:        
-                guess_str = convert_guess_to_str(numeric_guess,game_board)
-                if guess_str in previous_guesses:
-                    print("\nYou have already made this guess")
+                
+            if len(numeric_guess) == 4:
+                if not guess_is_unique(numeric_guess):
+                    print("\nYou cant guess the same word twice")
                 else:
-                    return numeric_guess        
+                    guess_str = convert_guess_to_str(numeric_guess,game_board)
+                    if guess_str in previous_guesses:
+                        print("\nYou have already made this guess")
+                    else:
+                        return numeric_guess        
                    
         print("\nPlease ensure to enter 4 numbers seperated by commas respresenting your 4 chosen words")
 
@@ -228,6 +235,7 @@ def play_game(game_board):
             correct_guesses += 1
             if correct_guesses > 3:
                 print("\nCongratulations, you have won!!")
+                display_game_board(game_board)
                 return
             
         elif is_guess_close(game_board, guess):
