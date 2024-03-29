@@ -16,7 +16,6 @@ from termcolor import colored, cprint
 
 # Things to fix
         # Guessing same word twice
-        # Dont count same guess
 
 
 #Packages
@@ -125,10 +124,9 @@ def centered_text(word,width):
     text += " " * (width - len(text))
     return text
 
-def get_player_input(game_board):
+def get_player_input(game_board,previous_guesses):
     
     guess_string = input("\nPlease enter your guess by typing the 4 numbers seperated by commas associated to the words you think are connected (e.g '1,5,8,11') : ")
-    
 
     while True:
         guess = guess_string.split(",")
@@ -145,7 +143,11 @@ def get_player_input(game_board):
                     
 
             if len(numeric_guess) == 4:        
-                return numeric_guess        
+                guess_str = convert_guess_to_str(numeric_guess,game_board)
+                if guess_str in previous_guesses:
+                    print("\nYou have already made this guess")
+                else:
+                    return numeric_guess        
                    
         print("\nPlease ensure to enter 4 numbers seperated by commas respresenting your 4 chosen words")
 
@@ -200,16 +202,24 @@ def pluralise(number,word,plural):
     else:
         return word
 
+def convert_guess_to_str(guess,game_board):
+    word_list = []
+    for cell in guess:
+        word_list.append(game_board[cell]["word"])
+    word_list.sort()
+    return ",".join(word_list)
 
 def play_game(game_board):
     lives = 4
     correct_guesses = 0
+    previous_guesses = []
     
     while lives > 0:
         display_game_board(game_board)
         print(f"\nYou have {lives} {pluralise(lives,"guess","es")} left.")
 
-        guess = get_player_input(game_board)
+        guess = get_player_input(game_board,previous_guesses)
+        previous_guesses.append(convert_guess_to_str(guess,game_board))
         correct_catagory = is_guess_correct(game_board, guess)
 
         if correct_catagory != None: # guess is correct
