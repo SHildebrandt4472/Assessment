@@ -14,9 +14,12 @@ from termcolor import colored, cprint
         # Change cell numbers to start at one
         # Split "please enter guess.." onto 2 lines
         # Add more categories (maybe move to separate)
+        # Add a phew print out if 1 guess remaining
 
 # Things to fix
-        # Not a valid number printouts
+        # Guessing same word twice
+        # Dont count same guess
+        # fix line spacing
 
 
 #Packages
@@ -123,6 +126,7 @@ def get_player_input(game_board):
     
     guess_string = input("Please enter your guess by typing the 4 numbers seperated by commas associated to the words you think are connected (e.g '1,5,8,11') : ")
     
+
     while True:
         guess = guess_string.split(",")
         if len(guess) == 4:  # if guess correct length, 4 inputs
@@ -135,13 +139,13 @@ def get_player_input(game_board):
                     
                 else:
                     print(f"'{string}' is not a valid word number")
-                    print("Please ensure to enter 4 numbers seperated by commas respresenting your 4 chosen words")
+                    
 
             if len(numeric_guess) == 4:        
                 return numeric_guess        
-                    
-        else:            
-            print("Please ensure to enter 4 numbers seperated by commas respresenting your 4 chosen words")
+
+        print()                     
+        print("Please ensure to enter 4 numbers seperated by commas respresenting your 4 chosen words")
 
         print("")
         guess_string = input("Please try again : ")
@@ -189,6 +193,11 @@ def update_board(game_board, catagory):
                     swap_cells(game_board,first_not_found,last_cell_found)
                     break
 
+def pluralise(number,word,plural):
+    if number != 1:
+        return word + plural
+    else:
+        return word
 
 
 def play_game(game_board):
@@ -197,23 +206,26 @@ def play_game(game_board):
     
     while lives > 0:
         display_game_board(game_board)
+        print(f"You have {lives} {pluralise(lives,"guess","es")} left.")
+        print()
+
         guess = get_player_input(game_board)
         correct_catagory = is_guess_correct(game_board, guess)
 
         if correct_catagory != None: # guess is correct
             update_board(game_board, correct_catagory)
-            print("\nCorrect guess!\n")
+            print("Correct guess!\n")
             correct_guesses += 1
             if correct_guesses > 3:
                 print("Congratulations, you have won!!")
                 return
             
         elif is_guess_close(game_board, guess):
-            print("\nOne away, you got three out of the 4 words correct\n")
+            print("One away, you got three out of the 4 words correct\n")
             lives -= 1
 
         else:
-            print("\nSorry, Incorrect guess\n")
+            print("Sorry, Incorrect guess\n")
             lives -= 1
     
     print("Oh no, looks like you've run out of guesses, GAME OVER")
