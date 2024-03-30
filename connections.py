@@ -1,7 +1,3 @@
-import sys
-
-from termcolor import colored, cprint
-
 # Connections python game
 # By Sam Hildebrandt
 # Version 0.0.2   # First playable version
@@ -19,6 +15,8 @@ from termcolor import colored, cprint
 
 #Packages
 import random
+import sys
+from termcolor import colored, cprint
 
 # Constants
 catagories = [  # word list in catagories

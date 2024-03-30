@@ -1,22 +1,25 @@
-![Logo](https://raw.githubusercontent.com/fong-a/11-SE-Assessmnent-1-Examplar/main/logo.webp)
+![Logo](https://github.com/SHildebrandt4472/Public/blob/main/PyConnect_logo.jpg?raw=true)
 
-# Hangman Game in Python
+# PyConnect in Python
 
-This is a simple implementation of the classic game Hangman in Python. The game was created by Andrew Fong on 12/11/2023 as an example for Year 11 Software Engineering Students embarking on their first Assessment Task.
+This is a simple verison of the classic NewYork Times game "Connections" in Python. The game was created by Samuel Hildebrandt on 30/03/2024 for the Year 11 Software Engineering Task 1 assessment.
 
 ## How to Play
 
-The game selects a random fruit name from a list. The player has to guess the word one letter at a time. You get the drill.
+View the 4x4 grid of words from 4 catagories randomly mixed, and take a guess at finding the correct words in each catagory by entering the 4 numbers of the cells of the words you would like to guess.
+Try to find all 4 four words in each of the 4 catagories.
+You've only 4 incorrect guesses..
+Good luck!!
 
 ## Installation
 
 1. Clone the repository:
-   https://github.com/fong-a/11-SE-Assessmnent-1-Examplar.git
+   https://github.com/SHildebrandt4472/Assessmernt
 
 2. Navigate to the cloned repository
 
 3. Run the game:
-   python hangPy.py
+   connections.py
 
 ## Contributing
 
@@ -24,4 +27,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[License](https://github.com/SHildebrandt4472/Assessmernt/blob/2d54f4022284d0cf219e869b8a317adac709359e/LICENSE)
