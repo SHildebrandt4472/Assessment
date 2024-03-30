@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/fong-a/11-SE-Assessmnent-1-Examplar/main/logo.webp)
+![Logo](https://github.com/SHildebrandt4472/Assessmernt/blob/main/PyConnect_logo.jpg?raw=true)
 
 # Hangman Game in Python
 
