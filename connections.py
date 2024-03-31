@@ -1,14 +1,13 @@
 # Connections python game
 # By Sam Hildebrandt
 # Version 0.0.2   # First playable version
+# Version 1.0.0   # First release
+# Version 1.1.0   # Added shuffle, fix guess prompt, add phew message
 
 # Things to add
         # Add colours
         # add fancy graphics welcome screen
-        # Change cell numbers to start at one
-        # Split "please enter guess.." onto 2 lines
         # Add more categories (maybe move to separate)
-        # Add a phew print out if 1 guess remaining
 
 # Things to fix
 
@@ -130,9 +129,13 @@ def guess_is_unique(guess):
 
 def get_player_input(game_board,previous_guesses):
     
-    guess_string = input("\nPlease enter your guess by typing the 4 numbers seperated by commas associated to the words you think are connected (e.g '1,5,8,11') : ")
+    prompt = "\nPlease enter your guess by typing the 4 numbers seperated by commas associated to the words you think are connected (e.g '1,5,8,11')\nOr enter 'S' to shuffle the game board\nYour guess :  "
+    guess_string = input(prompt)
 
     while True:
+        if guess_string.upper() == "S":
+            return "shuffle"
+
         guess = guess_string.split(",")
         if len(guess) == 4:  # if guess correct length, 4 inputs
             numeric_guess =[]
@@ -201,6 +204,19 @@ def update_board(game_board, catagory):
                     swap_cells(game_board,first_not_found,last_cell_found)
                     break
 
+def shuffle_board(game_board):
+    cell = 0
+    while game_board[cell]["done"] == True:
+        cell += 1
+
+    #  Cell now is first word in the list that hasnt been found
+    
+    not_found_words = game_board[cell:]  #  list of all words not found and shuffle them
+    random.shuffle(not_found_words)
+    for word in not_found_words:
+        game_board[cell] = word  #  Put the words back into the game board in shuffled order
+        cell += 1
+
 def pluralise(number,word,plural):
     if number != 1:
         return word + plural
@@ -224,6 +240,9 @@ def play_game(game_board):
         print(f"\nYou have {lives} {pluralise(lives,"guess","es")} left.")
 
         guess = get_player_input(game_board,previous_guesses)
+        if guess == "shuffle":
+            shuffle_board(game_board)
+            continue  # skip everything else and go back to while loop
         previous_guesses.append(convert_guess_to_str(guess,game_board))
         correct_catagory = is_guess_correct(game_board, guess)
 
@@ -233,6 +252,8 @@ def play_game(game_board):
             correct_guesses += 1
             if correct_guesses > 3:
                 print("\nCongratulations, you have won!!")
+                if lives < 2:
+                    print("Phew that was close!")
                 display_game_board(game_board)
                 return
             
