@@ -18,9 +18,28 @@ import sys
 from termcolor import colored, cprint
 from catagories import catagories
 
+def print_gap():
+    for i in range(50):
+        print()
+
+def enter_to_continue():
+    input("\nPress Enter to continue...")
+    print_gap()
 
 def welcome():
-    print("\nWelcome to Connections!")
+    cprint("\nWelcome to PyConnect!", color="yellow", attrs=["bold"],)
+    print("\nIn this game you will be presented with a 4x4 grid of words.")
+    print("Each word is associated with a category.")
+    print("Your task is to find the 4 words that are connected by a common theme.")
+    print("You have 4 guesses to find the connections!")
+    print()
+    print("To make a guess, enter the 4 numbers of the words you think are connected, seperated by commas.")
+    print("For example, if you think words 1, 5, 8 and 11 are connected, enter '1,5,8,11'")
+    print()
+    print("If you need to shuffle the board, enter 'S'")
+    print()
+    print("Good luck!")
+    enter_to_continue()
 
 # Gnenerate a new game by slecting 4 random catgories and adding their words to the game board list
 def generate_new_game():
@@ -86,11 +105,16 @@ def display_game_board(game_board):
         print_spacer(col_width,cell+1,game_board)
         for col in range(4):  # create individual col
             word = game_board[cell]["word"]
-            print("|"+centered_text(word,col_width),end="")  # print without creating new line
+            print("|",end="")  # print without creating new line
+            if game_board[cell]["done"] == True:
+                clr = "green"
+            else:
+                clr = "cyan"
+            cprint(centered_text(word,col_width), end="", color=clr)
             cell += 1
         print("|", end="")
-        if game_board[cell-1]["done"] == True:  # if line has veeb guessed
-            print(f"    {game_board[cell-1]["catagory"]["name"]}",end="")
+        if game_board[cell-1]["done"] == True:  # if line has been guessed
+            cprint(f"   {game_board[cell-1]["catagory"]["name"]}",end="",color="green")
         print()    
         print_spacer(col_width)
     print_line(col_width)
@@ -132,15 +156,15 @@ def get_player_input(game_board,previous_guesses):
                 if cell >= 0 and cell < len(game_board) and game_board[cell]["done"] == False: #  Validate guess
                     numeric_guess.append(cell)
                 else:
-                    print(f"\n'{string}' is not a valid word number")
+                    cprint(f"\n'{string}' is not a valid word number",color="red")
                 
             if len(numeric_guess) == 4:
                 if not guess_is_unique(numeric_guess):
-                    print("\nYou cant guess the same word twice")
+                    cprint("\nYou cant guess the same word twice",color="red")
                 else:
                     guess_str = convert_guess_to_str(numeric_guess,game_board)
                     if guess_str in previous_guesses:
-                        print("\nYou have already made this guess")
+                        cprint("\nYou have already made this guess",color="yellow")
                     else:
                         return numeric_guess        
                    
@@ -227,6 +251,7 @@ def play_game(game_board):
         print(f"\nYou have {lives} {pluralise(lives,"guess","es")} left.")
 
         guess = get_player_input(game_board,previous_guesses)
+        print_gap()
         if guess == "shuffle":
             shuffle_board(game_board)
             continue  # skip everything else and go back to while loop
@@ -235,21 +260,21 @@ def play_game(game_board):
 
         if correct_catagory != None: # guess is correct
             update_board(game_board, correct_catagory)
-            print("\nCorrect guess!")
+            cprint("\nCorrect guess!",color="green",attrs=["bold"])
             correct_guesses += 1
             if correct_guesses > 3:
-                print("\nCongratulations, you have won!!")
+                cprint("\nCongratulations, you have won!!",color="green",attrs=["bold"])
                 if lives < 2:
                     print("Phew that was close!")
                 display_game_board(game_board)
                 return
             
         elif is_guess_close(game_board, guess):
-            print("\nOne away, you got three out of the 4 words correct")
+            cprint("\nOne away, you got three out of the 4 words correct",color="yellow",attrs=["bold"])
             lives -= 1
 
         else:
-            print("\nSorry, Incorrect guess")
+            cprint("\nSorry, Incorrect guess",color="red",attrs=["bold"])
             lives -= 1
     
     print("\nOh no, looks like you've run out of guesses, GAME OVER")
