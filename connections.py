@@ -16,21 +16,8 @@
 import random
 import sys
 from termcolor import colored, cprint
+from catagories import catagories
 
-# Constants
-catagories = [  # word list in catagories
-    {"name": "Muiscal Instruments", "words": ["guitar", "piano", "violin", "drums"]},
-    {"name": "Fruits",              "words": ["apple", "banana", "pear", "grape"]},
-    {"name": "Animals",             "words": ["dog", "cat", "bird", "fish"]},
-    {"name": "Colors",              "words": ["red", "blue", "green", "yellow"]},
-    {"name": "Shapes",              "words": ["circle", "square", "triangle", "rectangle"]},
-    {"name": "Vehicles",            "words": ["car", "truck", "bus", "train"]},
-    {"name": "Sports",              "words": ["soccer", "basketball", "football", "baseball"]},
-    {"name": "Countries",           "words": ["usa", "canada", "mexico", "brazil"]}
-]
-
-
-game_catagories = []
 
 def welcome():
     print("\nWelcome to Connections!")
@@ -93,7 +80,7 @@ def display_game_board(game_board):
 
     print() 
     cell = 0
-    col_width = 18
+    col_width = 20
     for row in range(4):   # create the row
         print_line(col_width)   
         print_spacer(col_width,cell+1,game_board)
