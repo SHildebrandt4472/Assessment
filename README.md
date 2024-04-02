@@ -12,7 +12,7 @@ You've only 4 incorrect guesses..
 Good luck!!
 
 ## Installation
-
+Game instalations:
 1. Clone the repository:
    https://github.com/SHildebrandt4472/Assessmernt
 
@@ -21,6 +21,8 @@ Good luck!!
 3. Run the game:
    connections.py
 
+4. For a better game experience, install python package termcolor from:
+https://pypi.org/project/termcolor/
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
