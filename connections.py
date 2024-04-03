@@ -5,9 +5,6 @@
 # Version 1.1.0   # Added shuffle, fix guess prompt, add phew message
 
 # Things to add
-        # Add colours
-        # add fancy graphics welcome screen
-        # Add more categories (maybe move to separate)
 
 # Things to fix
 
