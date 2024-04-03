@@ -5,6 +5,7 @@
 # Version 1.1.0   # Added shuffle, fix guess prompt, add phew message
 # Version 1.2.0   # Added more catagories
 # Version 1.3.0   # Added termcolor package into code, plus Ascii art
+# Version 1.3.1   # Added show completed board at end of game if not successful
 
 # Things to add
 
@@ -320,7 +321,15 @@ def play_game(game_board):
             lives -= 1
     
     print("\nOh no, looks like you've run out of guesses, GAME OVER")  # if player runs out of guesses
+    print("\nThe correct catagories were:")
 
+    game_catagories = []
+    for cell in game_board:  # find the catagories that have been completed
+        catagory = cell["catagory"]
+        if catagory not in game_catagories:  # if catagory hasnt already been guessed
+            game_catagories.append(catagory) # add the catagory to the list
+            update_board(game_board,catagory)  # complete the catagory
+    display_game_board(game_board)
 
 # Main prog starts here
 welcome()
