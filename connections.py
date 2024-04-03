@@ -3,6 +3,8 @@
 # Version 0.0.2   # First playable version
 # Version 1.0.0   # First release
 # Version 1.1.0   # Added shuffle, fix guess prompt, add phew message
+# Version 1.2.0   # Added more catagories
+# Version 1.3.0   # Added termcolor package into code, plus Ascii art
 
 # Things to add
 
